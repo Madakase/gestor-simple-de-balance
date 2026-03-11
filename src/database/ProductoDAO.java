@@ -15,14 +15,13 @@ public class ProductoDAO {
 	ResultSet resultQuery;
 	
 	public boolean registrarProducto(Producto producto) {
-		String statement = "INSERT INTO producto(nombre,precio, tamaño) VALUES(?,?,?)";
+		String statement = "INSERT INTO producto(nombre,precio) VALUES(?,?)";
 		
 		try {
 			conexion = ConexionDB.getConnection();
 			ps = conexion.prepareStatement(statement);
 			ps.setString(1, producto.getNombre());
 			ps.setDouble(2, producto.getPrecio());
-			ps.setDouble(3, producto.getTamaño());
 			ps.execute();
 			
 			return true;
@@ -52,8 +51,7 @@ public class ProductoDAO {
 			while (resultQuery.next()) {
 				String nombre= resultQuery.getString("nombre");
 				Double precio = resultQuery.getDouble("precio");
-				Double tamaño= resultQuery.getDouble("tamaño");
-				Producto producto = new Producto(nombre,precio,tamaño);
+				Producto producto = new Producto(nombre,precio);
 				
 				productos.add(producto);
 			}

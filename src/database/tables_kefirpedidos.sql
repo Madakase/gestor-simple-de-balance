@@ -22,8 +22,5 @@ create table gasto(
 
 create table producto(
     nombre varchar(50) primary key not null,
-    precio double,
-    tamaño double
-);    
-
-    
+    precio double
+);        
