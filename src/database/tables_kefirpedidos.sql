@@ -15,7 +15,7 @@ create table gasto(
 	id_gasto int primary key not null AUTO_INCREMENT,
     fecha date not null,
     descripcion varchar(200) not null,
-    tipo enum('PERSONAL', 'INSUMOS', 'OTRO')
+    tipo enum('PERSONAL', 'INSUMOS', 'OTRO'),
     estado enum('PENDIENTE', 'CANCELADO'),
     deuda double not null
 );
@@ -24,7 +24,6 @@ create table producto(
     nombre varchar(50) primary key not null,
     precio double,
     tamaño double
-);
-    
+);    
 
     
