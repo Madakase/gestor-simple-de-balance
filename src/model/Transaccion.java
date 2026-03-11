@@ -22,6 +22,7 @@ public abstract class Transaccion {
 		return fecha;
 	}
 	
+	
 	public Estado getEstado() {
 		return estado;
 	}
