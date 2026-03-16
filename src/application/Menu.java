@@ -37,12 +37,16 @@ public class Menu extends Application{
 	public ArrayList<Button> inicializarBotones(BorderPane root){
 		Button btnRegistrarVenta = new Button("Registrar Venta");
 		btnRegistrarVenta.setOnAction(e -> inicializarCentroVenta(root));
+		btnRegistrarVenta.getStyleClass().add("btn-primary"); 
 		Button btnRegistrarGasto= new Button("Registrar Gasto");
 		btnRegistrarGasto.setOnAction(e -> inicializarCentroGasto(root));
+		btnRegistrarGasto.getStyleClass().add("btn-primary"); 
 		Button btnRegistrarProducto= new Button("Registrar Producto");
 		btnRegistrarProducto.setOnAction(e -> inicializarCentroProducto(root));
+		btnRegistrarProducto.getStyleClass().add("btn-primary"); 
 		Button btnConsultarBalance= new Button("Balance General");
 		btnConsultarBalance.setOnAction(e -> inicializarCentroBalance(root));
+		btnConsultarBalance.getStyleClass().add("btn-primary"); 
 		
 		
 		ArrayList<Button> botones = new ArrayList<>();
@@ -78,6 +82,7 @@ public class Menu extends Application{
 		cajaTitulo.setAlignment(Pos.CENTER);
 		BorderPane.setMargin(cajaTitulo, new Insets(25,0,0,0));
 		tituloMenu.setFont(Font.font("Arial", 16));
+		tituloMenu.getStyleClass().add("brand-label");
 		root.setTop(cajaTitulo);
 	}
 	
@@ -85,10 +90,10 @@ public class Menu extends Application{
 	public void inicializarCentroBalance(BorderPane root) {
 		VBox cajaCentro = new VBox(10);
 		Balance interfazBalance = new Balance();
-		TablaTransaccion tTransaccion= new TablaTransaccion();
+		TablaBalance tBalance= new TablaBalance();
 		
 		interfazBalance.inicializarBalance(cajaCentro);
-		tTransaccion.iniciarTabla(cajaCentro);
+		tBalance.iniciarTabla(cajaCentro);
 		
 		root.setCenter(cajaCentro);
 	}
@@ -96,7 +101,7 @@ public class Menu extends Application{
 	public void inicializarCentroVenta(BorderPane root) {
 		VBox cajaCentro = new VBox (10);
 		Registrable interfazVenta = new RegistrarVenta();
-		TablaTransaccion tTransaccion= new TablaTransaccion();
+		TablaVenta tTransaccion= new TablaVenta();;
 		
 		interfazVenta.inicializarInterfazRegistro(cajaCentro, "Venta");
 		tTransaccion.iniciarTabla(cajaCentro);
@@ -109,7 +114,7 @@ public class Menu extends Application{
 	public void inicializarCentroGasto(BorderPane root) {
 		VBox cajaCentro = new VBox (10);
 		Registrable interfazVenta = new RegistrarGasto();
-		TablaTransaccion tTransaccion= new TablaTransaccion();
+		TablaGasto tTransaccion= new TablaGasto();
 		
 		interfazVenta.inicializarInterfazRegistro(cajaCentro, "Gasto");
 		tTransaccion.iniciarTabla(cajaCentro);

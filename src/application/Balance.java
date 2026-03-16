@@ -1,6 +1,7 @@
 package application;
 
 
+import database.BalanceDAO;
 import javafx.geometry.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
@@ -8,10 +9,16 @@ import javafx.scene.layout.*;
 
 public class Balance{
 	
+	BalanceDAO balanceDB = new BalanceDAO();
+	
 	public void inicializarBalance(VBox cajaCentro) {
 		HBox contenedorTarjetas = new HBox(20);
 		contenedorTarjetas.setAlignment(Pos.CENTER);
 		contenedorTarjetas.setPadding(new Insets(20));
+		contenedorTarjetas.setPrefWidth(800);
+		contenedorTarjetas.setMaxWidth(800);
+		contenedorTarjetas.setMinWidth(800);
+		contenedorTarjetas.getStyleClass().add("form-card");
 		
 		TitledPane tVenta = iniciarTarjetaVenta();
 		TitledPane tGasto = iniciarTarjetaGastos();
@@ -30,6 +37,7 @@ public class Balance{
 		panel.setCollapsible(false);
 		panel.setMaxWidth(200);
 		panel.setMinWidth(200);
+		panel.getStyleClass().add("summary-card");
 		return panel;
 	}
 	public VBox iniciarContenidoTarjeta() {
@@ -42,10 +50,10 @@ public class Balance{
 	public TitledPane iniciarTarjetaVenta() {
 		TitledPane tarjetaVentas = iniciarTarjeta("TOTAL VENTAS");
 		VBox contenidoVentas = iniciarContenidoTarjeta();
-		contenidoVentas.getChildren().addAll(
-			    new Label("Aqui va el total"),
-			    new Label("Algun Porcentaje")
-			);
+		String mensajeTotal = "+"+ String.valueOf(balanceDB.mostrarTotalVenta());
+		Label label = new Label(mensajeTotal);
+		label.getStyleClass().add("card-amount-green");
+		contenidoVentas.getChildren().add(label);
 		tarjetaVentas.setContent(contenidoVentas);
 		return tarjetaVentas;
 	}
@@ -53,10 +61,10 @@ public class Balance{
 	public TitledPane iniciarTarjetaGastos() {
 		TitledPane tarjetaGastos = iniciarTarjeta("TOTAL GASTOS");
 		VBox contenidoGastos = iniciarContenidoTarjeta();
-		contenidoGastos.getChildren().addAll(
-			    new Label("Aqui va el total"),
-			    new Label("Algun Porcentaje")
-			);
+		String mensajeTotal = "-"+ String.valueOf(balanceDB.mostrarTotalGasto());
+		Label label = new Label(mensajeTotal);
+		label.getStyleClass().add("card-amount-red");
+		contenidoGastos.getChildren().add(label);
 		tarjetaGastos.setContent(contenidoGastos);
 		return tarjetaGastos;
 	}
@@ -64,10 +72,10 @@ public class Balance{
 	public TitledPane iniciarTarjetaBalance() {
 		TitledPane tarjetaBalance = iniciarTarjeta("BALANCE NETO");
 		VBox contenidoBalance = iniciarContenidoTarjeta();
-		contenidoBalance.getChildren().addAll(
-			    new Label("Aqui va el total"),
-			    new Label("Algun Porcentaje")
-			);
+		Double balanceTotal= balanceDB.mostrarTotalVenta() - balanceDB.mostrarTotalGasto();
+		Label label = new Label(String.valueOf(balanceTotal));
+		label.getStyleClass().add("card-amount-gold");
+		contenidoBalance.getChildren().add(label);
 		tarjetaBalance.setContent(contenidoBalance);
 		return tarjetaBalance;
 	}

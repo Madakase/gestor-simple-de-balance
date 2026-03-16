@@ -16,6 +16,7 @@ public class RegistrarProducto extends Registrable{
 	
 	public void inicializarInterfazRegistro(VBox cajaCentro, String tipo) {
 		Button btnRegistrar = new Button("Registrar "+ tipo);
+		btnRegistrar.getStyleClass().add("btn-primary");
 		btnRegistrar.setOnAction(e-> ejecutarRegistroProducto());
 	
 		VBox cajaCampos = inicializarCajaCampos();
@@ -33,7 +34,6 @@ public class RegistrarProducto extends Registrable{
 		
 		campos.add(this.crearCampoTexto("Nombre"));
 		campos.add(this.crearCampoTexto("Precio"));
-		campos.add(this.crearCampoTexto("Tamaño"));
 		
 		
 		VBox cajaDatos = new VBox(10);
@@ -46,9 +46,9 @@ public class RegistrarProducto extends Registrable{
 	
 	public void ejecutarRegistroProducto() {
 		
-		if (estanLlenos()) {
+		if (valoresEstanCompletos()) {
 			ArrayList<String> valores = getValores();
-			this.producto = new Producto(valores.get(0), Double.valueOf(valores.get(1)), Double.valueOf(valores.get(2)));
+			this.producto = new Producto(valores.get(0), Double.valueOf(valores.get(1)));
 			
 			productoDB.registrarProducto(producto);
 			
