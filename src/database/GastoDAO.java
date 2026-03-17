@@ -80,4 +80,50 @@ public class GastoDAO implements TransaccionDAO{
 			}
 		}
 	}
+	
+	public void editarFila(Transaccion tr, String id) {
+		Gasto gasto = (Gasto) tr;
+		String fechaFormateada = gasto.getFecha().toString();
+		String estadoFormateado= gasto.getEstado().toString();
+		String tipoFormateado= gasto.getTipo().toString();
+		
+		String statement = String.format("UPDATE venta SET fecha = %s, descripcion = %s, tipo = %s, estado = %s, pago = %s WHERE id_gasto = %d"
+				, fechaFormateada, gasto.getDescripcion(), tipoFormateado, estadoFormateado, gasto.getValor(), id);
+		try{
+			conexion = ConexionDB.getConnection();
+			ps = conexion.prepareStatement(statement);
+			resultQuery= ps.executeQuery();
+
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if (resultQuery != null) resultQuery.close();
+	            if (ps != null) ps.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+				System.out.print("No se pudo cerrar el statement"); /*Esto se repite quizas pueda ser un metodo aparte*/
+			}
+		}
+	}
+	
+	public void eliminarFila(String id) {
+		String statement = String.format("DELETE FROM gasto WHERE id_gasto = %s",  id);
+		try{
+			conexion = ConexionDB.getConnection();
+			ps = conexion.prepareStatement(statement);
+			resultQuery= ps.executeQuery();
+
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if (resultQuery != null) resultQuery.close();
+	            if (ps != null) ps.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+				System.out.print("No se pudo cerrar el statement"); /*Esto se repite quizas pueda ser un metodo aparte*/
+			}
+		}
+	}
 }
