@@ -17,8 +17,8 @@ import javafx.scene.layout.VBox;
 
 public abstract class Entablable<T>{
 	
-	TableView<T> tabla = new TableView<T>();
-	Button btnRefrescar = new Button("Actualizar Tabla");
+	private TableView<T> tabla = new TableView<T>();
+	private Button btnRefrescar = new Button("Actualizar Tabla");
 	
 	public TableView<T> iniciarTabla(VBox cajaCentro) {
 		tabla.getStyleClass().add("table-view");
@@ -68,5 +68,9 @@ public abstract class Entablable<T>{
         return scrollPane;
 	}
 	
+	public TableView<T> getTabla(){
+		return this.tabla;
+	}
+		
 	public abstract void cargarDatos();
 }

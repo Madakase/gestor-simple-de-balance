@@ -13,7 +13,7 @@ import javafx.scene.Node;
 
 public abstract class  Registrable  {
 	
-	ArrayList<Node> campos = new ArrayList<>();
+	private ArrayList<Node> campos = new ArrayList<>();
 	
 	
 	public abstract void inicializarInterfazRegistro(VBox cajaCentro, String tipo);
@@ -114,6 +114,10 @@ public abstract class  Registrable  {
         }
         return true;
     }
+	
+	public ArrayList<Node> getCampos(){
+		return this.campos;
+	}
 	
 	public ArrayList<String> getValores(){
 		ArrayList<String> valores = new ArrayList<>();

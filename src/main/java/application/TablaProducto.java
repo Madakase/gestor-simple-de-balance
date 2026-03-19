@@ -5,13 +5,18 @@ import java.util.ArrayList;
 import database.ProductoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Producto;
 
-public class TablaProducto extends Entablable<Producto>{
+public class TablaProducto extends Entablable<Producto> implements Seleccionable{
 	
 	ProductoDAO productoDB = new ProductoDAO();
+	
+	String idFilaSeleccionada;
 	
 	public ArrayList<TableColumn<Producto, ?>> inicializarColumnas(){
 		ArrayList<TableColumn<Producto, ?>> columnas = new ArrayList<>();
@@ -32,6 +37,38 @@ public class TablaProducto extends Entablable<Producto>{
 	public void cargarDatos() {
 		ArrayList<Producto> productos = productoDB.listarProductos();
         ObservableList<Producto> data = FXCollections.observableArrayList(productos);
-        this.tabla.setItems(data);
+        getTabla().setItems(data);
+	}
+	
+	public String setFilasACampos(ArrayList<Node> campos) {
+		TableView<Producto> tabla = getTabla(); 	    
+		if (tabla == null) return null;
+		
+		tabla.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+	        if (newSelection == null || campos == null) return;
+	        
+	        Producto producto = (Producto) newSelection;
+	        
+	        int indiceCampo = 0;
+	        
+	        
+	        for (Node nodo : campos) {
+	            if (nodo instanceof TextField) {
+	                TextField tf = (TextField) nodo;
+	                
+	                switch (indiceCampo) {
+	                	case 1:
+	                		idFilaSeleccionada = producto.getNombre();
+	                        tf.setText(idFilaSeleccionada);
+	                        break;
+	                    case 2:
+	                        tf.setText(String.valueOf(producto.getPrecio()));
+	                    
+	                }
+	                indiceCampo++;
+	            }
+	        }
+	    });
+		return idFilaSeleccionada;
 	}
 }

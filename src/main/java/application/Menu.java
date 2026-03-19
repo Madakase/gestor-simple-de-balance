@@ -103,7 +103,10 @@ public class Menu extends Application{
 	public void inicializarCentroVenta(BorderPane root) {
 		VBox cajaCentro = new VBox (10);
 		Registrable interfazVenta = new RegistrarVenta();
-		TablaVenta tTransaccion= new TablaVenta();;
+		TablaVenta tTransaccion= new TablaVenta();
+		
+		ArrayList<Node>camposVenta= interfazVenta.getCampos();
+		
 		
 		interfazVenta.inicializarInterfazRegistro(cajaCentro, "Venta");
 		tTransaccion.iniciarTabla(cajaCentro);

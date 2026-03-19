@@ -43,7 +43,9 @@ public class TablaBalance extends TablaTransaccion{
 	public void cargarDatos() {
 		ArrayList<Transaccion> transacciones = balanceDB.listarTransacciones();
 		ObservableList<Transaccion> data = FXCollections.observableArrayList(transacciones);
-		this.tabla.setItems(data);
+		getTabla().setItems(data);
 	}
+	
+	
 
 }
