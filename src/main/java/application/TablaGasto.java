@@ -8,16 +8,16 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Transaccion;
+import model.Venta;
 import model.Gasto;
 
 public class TablaGasto extends TablaTransaccion implements Seleccionable{
-	GastoDAO gastoDB = new GastoDAO();
+	private GastoDAO gastoDB = new GastoDAO();
 	
-	String idFilaSeleccionada;
+	private String idFilaSeleccionada= null;
 	
 	public void cargarDatos() {
 		ArrayList<Transaccion> gastos = gastoDB.listarTransacciones();
@@ -25,53 +25,53 @@ public class TablaGasto extends TablaTransaccion implements Seleccionable{
 		getTabla().setItems(data);
 	}
 	
-	public String setFilasACampos(ArrayList<Node> campos) {
-		TableView<Transaccion> tabla = getTabla(); 	    
-		if (tabla == null) return null;
+	public void setFilasACampos(ArrayList<Node> campos) {
 		
-		tabla.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-	        if (newSelection == null || campos == null) return;
-	        
-	        Gasto gasto = (Gasto) newSelection;
-	        int indiceCampo = 0;
-	        
-	        for (Node nodo : campos) {
-	            if (nodo instanceof TextField) {
-	                TextField tf = (TextField) nodo;
-	                
-	                switch (indiceCampo) {
-	                	case 0:
-	                		idFilaSeleccionada = String.valueOf(gasto.getId());
-	                
-	                	case 1:
-	                        tf.setText(gasto.getFecha().toString());
-	                        break;
-	                    case 2:
-	                        tf.setText(gasto.getDescripcion());
-	                        break;
-	                    
-	                    case 5:
-	                    	tf.setText(String.valueOf(gasto.getValor()));
+		getTabla().getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSel) -> {
+			if (newSel != null && campos != null) {
+	            Gasto gasto = (Gasto) newSel;
+	            idFilaSeleccionada = String.valueOf(gasto.getId());
+	            int indiceCampo = 0;
+	            for (Node nodo : campos) {
+	                if (nodo instanceof TextField) {
+	                    TextField tf = (TextField) nodo;
+	                    switch (indiceCampo) {
+	                        case 0: // fecha
+	                            tf.setText(gasto.getFecha().toString());
+	                            break;
+	                        case 1: // descripcion
+	                            tf.setText(gasto.getDescripcion());
+	                            break;
+	                        case 4: // valor (ajusta índice)
+	                            tf.setText(String.valueOf(gasto.getValor()));
+	                            break;
+	                    }
+	                } else if (nodo instanceof ChoiceBox) {
+	                    @SuppressWarnings("unchecked")
+	                    ChoiceBox<String> cb = (ChoiceBox<String>) nodo;
+	                    switch (indiceCampo) {
+	                        case 2: // tipo
+	                            cb.setValue(gasto.getTipo().toString());
+	                            break;
+	                        case 3: // estado
+	                            cb.setValue(gasto.getEstado().toString());
+	                            break;
+	                    }
 	                }
 	                indiceCampo++;
 	            }
-	            else if (nodo instanceof ChoiceBox) {
-	            	
-	                @SuppressWarnings("unchecked")
-					ChoiceBox<String> cb = (ChoiceBox<String>) nodo;
-	                
-	                switch (indiceCampo) {
-	                	case 3: 
-	                		cb.setValue(gasto.getTipo().toString());
-	                		break;
-	                	case 4:
-	                		cb.setValue(gasto.getEstado().toString());
-	                }
-	                indiceCampo++;
-	            }
+	        } else {
+	            idFilaSeleccionada = null;
 	        }
 	    });
-		return idFilaSeleccionada;
+	}
+	
+	public String getIdSeleccionado() {
+	    Transaccion seleccionado = getTabla().getSelectionModel().getSelectedItem();
+	    if (seleccionado instanceof Venta) {
+	        return String.valueOf(((Venta) seleccionado).getId());
+	    }
+	    return null;
 	}
 	
 	public ArrayList<TableColumn<Transaccion, ?>> inicializarColumnas(){
@@ -79,7 +79,7 @@ public class TablaGasto extends TablaTransaccion implements Seleccionable{
 		ArrayList<TableColumn<Transaccion, ?>> columnas = new ArrayList<>();
 		
 		TableColumn<Transaccion, Integer> colId = new TableColumn<>("ID");
-		colId.setCellValueFactory(new PropertyValueFactory<>("Id"));
+		colId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		this.formatearTamanoColumna(colId, 50);
 		
 		TableColumn<Transaccion, LocalDate> colFecha = new TableColumn<>("Fecha");
@@ -87,7 +87,7 @@ public class TablaGasto extends TablaTransaccion implements Seleccionable{
 		
 		TableColumn<Transaccion, Character> colDesc = new TableColumn<>("Descripcion");
 		colDesc.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-		this.formatearTamanoColumna(colDesc,250);
+		this.formatearTamanoColumna(colDesc,200);
 		
 		TableColumn<Transaccion, Character> colCat= new TableColumn<>("Categoría");
 		colCat.setCellValueFactory(new PropertyValueFactory<>("tipo"));

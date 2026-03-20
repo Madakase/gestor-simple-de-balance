@@ -35,6 +35,10 @@ public abstract class Transaccion {
 		return descripcion;
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public void setFecha(LocalDate fecha) {
 		this.fecha= fecha;
 	}

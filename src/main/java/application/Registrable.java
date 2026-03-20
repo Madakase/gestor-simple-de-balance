@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -16,9 +17,34 @@ public abstract class  Registrable  {
 	private ArrayList<Node> campos = new ArrayList<>();
 	
 	
-	public abstract void inicializarInterfazRegistro(VBox cajaCentro, String tipo);
+	public abstract void inicializarInterfazRegistro(VBox cajaCentro);
+	
+	public abstract void iniciarRegistro();
+	public abstract void iniciarEdicion();
+	public abstract void iniciarEliminacion();
 	
 	public abstract VBox inicializarCajaCampos();
+	
+	public HBox inicializarCajaBotones(String tipo) {
+		Button btnRegistrar = new Button("Registrar "+tipo);
+		Button btnEditar= new Button("Editar "+ tipo);
+		Button btnEliminar= new Button("Eliminar "+tipo);
+		
+		btnRegistrar.getStyleClass().add("btn-primary");
+		btnRegistrar.setOnAction(e -> iniciarRegistro());
+		
+		btnEditar.getStyleClass().add("btn-primary");
+		btnEditar.setOnAction(e -> iniciarEdicion());
+		
+		btnEliminar.getStyleClass().add("btn-primary");
+		btnEliminar.setOnAction(e -> iniciarEliminacion());
+		
+		HBox cajaBotones = new HBox(10);
+		cajaBotones.setAlignment(Pos.CENTER);
+		cajaBotones.getChildren().addAll(btnRegistrar,btnEditar,btnEliminar);
+		
+		return cajaBotones;
+	}
 	
 	
 	public HBox crearCampoTexto(String titulo) {
@@ -134,7 +160,15 @@ public abstract class  Registrable  {
 		return valores;
 	}
 	
-	
-	
+	public void limpiarCampos(ArrayList<Node> campos) {
+		for (Node nodo : campos) {
+	        if (nodo instanceof TextField) {
+	            ((TextField) nodo).clear(); 
+	        } 
+	        else if (nodo instanceof ChoiceBox) {
+	            ((ChoiceBox<?>) nodo).setValue(null);
+	        }
+		}
+	}
 	
 }

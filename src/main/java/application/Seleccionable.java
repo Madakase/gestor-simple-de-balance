@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.scene.Node;
 
 public interface Seleccionable {
-	public String setFilasACampos(ArrayList<Node> campo);
+	public void setFilasACampos(ArrayList<Node> campo);
+	public String getIdSeleccionado();
 		
 }

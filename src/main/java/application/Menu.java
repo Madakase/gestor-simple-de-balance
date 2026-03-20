@@ -103,13 +103,7 @@ public class Menu extends Application{
 	public void inicializarCentroVenta(BorderPane root) {
 		VBox cajaCentro = new VBox (10);
 		Registrable interfazVenta = new RegistrarVenta();
-		TablaVenta tTransaccion= new TablaVenta();
-		
-		ArrayList<Node>camposVenta= interfazVenta.getCampos();
-		
-		
-		interfazVenta.inicializarInterfazRegistro(cajaCentro, "Venta");
-		tTransaccion.iniciarTabla(cajaCentro);
+		interfazVenta.inicializarInterfazRegistro(cajaCentro);
 		
 		cajaCentro.setPadding(new Insets(40,0,40,0));
 		
@@ -119,10 +113,8 @@ public class Menu extends Application{
 	public void inicializarCentroGasto(BorderPane root) {
 		VBox cajaCentro = new VBox (10);
 		Registrable interfazVenta = new RegistrarGasto();
-		TablaGasto tTransaccion= new TablaGasto();
 		
-		interfazVenta.inicializarInterfazRegistro(cajaCentro, "Gasto");
-		tTransaccion.iniciarTabla(cajaCentro);
+		interfazVenta.inicializarInterfazRegistro(cajaCentro);
 		
 		cajaCentro.setPadding(new Insets(40,0,40,0));
 		
@@ -132,10 +124,8 @@ public class Menu extends Application{
 	public void inicializarCentroProducto(BorderPane root) {
 		VBox cajaCentro = new VBox (10);
 		Registrable interfazProducto = new RegistrarProducto();
-		TablaProducto tProducto= new TablaProducto();
 		
-		interfazProducto.inicializarInterfazRegistro(cajaCentro, "Producto");
-		tProducto.iniciarTabla(cajaCentro);
+		interfazProducto.inicializarInterfazRegistro(cajaCentro);
 		
 		cajaCentro.setPadding(new Insets(40,0,40,0));
 		

@@ -12,11 +12,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Producto;
 
+
 public class TablaProducto extends Entablable<Producto> implements Seleccionable{
 	
-	ProductoDAO productoDB = new ProductoDAO();
+	private ProductoDAO productoDB = new ProductoDAO();
 	
-	String idFilaSeleccionada;
+	private String idFilaSeleccionada= null;
 	
 	public ArrayList<TableColumn<Producto, ?>> inicializarColumnas(){
 		ArrayList<TableColumn<Producto, ?>> columnas = new ArrayList<>();
@@ -40,9 +41,8 @@ public class TablaProducto extends Entablable<Producto> implements Seleccionable
         getTabla().setItems(data);
 	}
 	
-	public String setFilasACampos(ArrayList<Node> campos) {
+	public void setFilasACampos(ArrayList<Node> campos) {
 		TableView<Producto> tabla = getTabla(); 	    
-		if (tabla == null) return null;
 		
 		tabla.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 	        if (newSelection == null || campos == null) return;
@@ -69,6 +69,11 @@ public class TablaProducto extends Entablable<Producto> implements Seleccionable
 	            }
 	        }
 	    });
-		return idFilaSeleccionada;
+	}
+	
+	public String getIdSeleccionado() {
+	    Producto seleccionado = getTabla().getSelectionModel().getSelectedItem();
+	    
+	    return String.valueOf(((Producto) seleccionado).getNombre());
 	}
 }

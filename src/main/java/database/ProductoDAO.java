@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import model.Producto;
 
-public class ProductoDAO {
+public class ProductoDAO{
 	
 	PreparedStatement ps;
 	Connection conexion;
@@ -92,6 +92,46 @@ public class ProductoDAO {
 			return null;
 		}
 		finally {
+			try {
+				if (resultQuery != null) resultQuery.close();
+	            if (ps != null) ps.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+				System.out.print("No se pudo cerrar el statement"); /*Esto se repite quizas pueda ser un metodo aparte*/
+			}
+		}
+	}
+	
+	public void editarFila(Producto producto, String id) {
+		String statement = String.format("UPDATE producto SET precio = %.2f WHERE nombre = %s", producto.getPrecio(), id);
+		try{
+			conexion = ConexionDB.getConnection();
+			ps = conexion.prepareStatement(statement);
+			resultQuery= ps.executeQuery();
+
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if (resultQuery != null) resultQuery.close();
+	            if (ps != null) ps.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+				System.out.print("No se pudo cerrar el statement"); /*Esto se repite quizas pueda ser un metodo aparte*/
+			}
+		}
+	}
+	
+	public void eliminarFila(String id) {
+		String statement = String.format("DELETE FROM producto WHERE nombre = %s",  id);
+		try{
+			conexion = ConexionDB.getConnection();
+			ps = conexion.prepareStatement(statement);
+			resultQuery= ps.executeQuery();
+
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
 			try {
 				if (resultQuery != null) resultQuery.close();
 	            if (ps != null) ps.close();

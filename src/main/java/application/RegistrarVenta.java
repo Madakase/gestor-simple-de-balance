@@ -7,33 +7,29 @@ import java.util.ArrayList;
 import database.ProductoDAO;
 import database.VentaDAO;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Estado;
 import model.Venta;
 
 public class RegistrarVenta extends Registrable{
+	private Venta venta = new Venta();
+	private TablaVenta tVenta= new TablaVenta();
+	private VentaDAO ventaDB = new VentaDAO();
+	private ProductoDAO productoDB = new ProductoDAO();
 	
-	
-	
-	Venta venta = new Venta();
-	VentaDAO ventaDB = new VentaDAO();
-	ProductoDAO productoDB = new ProductoDAO();
-	
-	public void inicializarInterfazRegistro(VBox cajaCentro, String tipo) {
-		Button btnRegistrar = new Button("Registrar "+ tipo);
-		btnRegistrar.getStyleClass().add("btn-primary");
-		btnRegistrar.setOnAction(e -> iniciarRegistroVenta());
-	
+	public void inicializarInterfazRegistro(VBox cajaCentro) {
+		HBox cajaBotones = inicializarCajaBotones("Venta");
 		VBox cajaCampos = inicializarCajaCampos();
 		cajaCampos.setAlignment(Pos.CENTER);
 		
 		VBox cajaRegistro = new VBox(30);
 		cajaRegistro.setAlignment(Pos.CENTER);
-		cajaRegistro.getChildren().addAll(cajaCampos, btnRegistrar);
+		cajaRegistro.getChildren().addAll(cajaCampos, cajaBotones);
 		
 		cajaCentro.getChildren().add(cajaRegistro);
+		tVenta.setFilasACampos(getCampos());
+		tVenta.iniciarTabla(cajaCentro);
 	}
 	
 	public VBox inicializarCajaCampos() {
@@ -52,15 +48,38 @@ public class RegistrarVenta extends Registrable{
 		return cajaDatos;
 	}
 	
-	public void iniciarRegistroVenta() {
+	public void iniciarRegistro() {
 		if (valoresEstanCompletos()) {
 			ArrayList<String> valores = getValores();
 			this.configurarVenta(valores);
 			ventaDB.registrarTransaccion(this.venta);
 			
 			System.out.print("Venta registrado correctamente");
+			limpiarCampos(getCampos());
 		}else {
 			System.out.print("Existen campos sin llenar");
+		}
+	}
+	
+	public void iniciarEdicion() {
+		String idFilaSeleccionada = tVenta.getIdSeleccionado();
+		if(valoresEstanCompletos()) {
+			ArrayList<String> valores = getValores();
+			this.configurarVenta(valores);
+			ventaDB.editarFila(venta, idFilaSeleccionada);
+			System.out.print("Venta editada correctamente");
+			limpiarCampos(getCampos());
+		}else {
+			System.out.print("Existen campos sin llenar");
+		}
+	}
+	
+	public void iniciarEliminacion() {
+		String idFilaSeleccionada = tVenta.getIdSeleccionado();
+		if (idFilaSeleccionada != null || idFilaSeleccionada != "") {
+			ventaDB.eliminarFila(idFilaSeleccionada);
+			System.out.print("Venta eliminada correctamente");
+			limpiarCampos(getCampos());
 		}
 	}
 	
