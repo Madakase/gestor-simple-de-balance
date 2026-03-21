@@ -57,11 +57,11 @@ public class TablaProducto extends Entablable<Producto> implements Seleccionable
 	                TextField tf = (TextField) nodo;
 	                
 	                switch (indiceCampo) {
-	                	case 1:
+	                	case 0:
 	                		idFilaSeleccionada = producto.getNombre();
 	                        tf.setText(idFilaSeleccionada);
 	                        break;
-	                    case 2:
+	                    case 1:
 	                        tf.setText(String.valueOf(producto.getPrecio()));
 	                    
 	                }

@@ -52,12 +52,14 @@ public class RegistrarVenta extends Registrable{
 		if (valoresEstanCompletos()) {
 			ArrayList<String> valores = getValores();
 			this.configurarVenta(valores);
-			ventaDB.registrarTransaccion(this.venta);
-			
-			System.out.print("Venta registrado correctamente");
-			limpiarCampos(getCampos());
+			if(ventaDB.registrarTransaccion(this.venta)) {
+				DialogUtils.mostrarInformacion("Gestor de Balance", "Venta registrada correctamente");
+				limpiarCampos(getCampos());
+			}else {
+				DialogUtils.mostrarError("ERROR", "La venta no ha podido registrarse correctamente. Intente de nuevo más tarde.");
+			}
 		}else {
-			System.out.print("Existen campos sin llenar");
+			DialogUtils.mostrarError("Gestor de Balance", "Existen campos que no fueron llenados correctamente");
 		}
 	}
 	
@@ -66,20 +68,31 @@ public class RegistrarVenta extends Registrable{
 		if(valoresEstanCompletos()) {
 			ArrayList<String> valores = getValores();
 			this.configurarVenta(valores);
-			ventaDB.editarFila(venta, idFilaSeleccionada);
-			System.out.print("Venta editada correctamente");
-			limpiarCampos(getCampos());
+			if(DialogUtils.mostrarConfirmacion("Confirmación", "¿Está seguro de editar esta venta?")) {
+				if(ventaDB.editarFila(venta, idFilaSeleccionada)) {
+					DialogUtils.mostrarInformacion("Gestor de Balance", "Venta editada correctamente");
+					limpiarCampos(getCampos());
+				}else {
+					DialogUtils.mostrarError("ERROR", "La venta no ha podido editarse correctamente. Intente de nuevo más tarde.");
+				}
+			}
 		}else {
 			System.out.print("Existen campos sin llenar");
+			DialogUtils.mostrarError("Gestor de Balance", "Existen campos que no fueron llenados correctamente");
 		}
 	}
 	
 	public void iniciarEliminacion() {
 		String idFilaSeleccionada = tVenta.getIdSeleccionado();
 		if (idFilaSeleccionada != null || idFilaSeleccionada != "") {
-			ventaDB.eliminarFila(idFilaSeleccionada);
-			System.out.print("Venta eliminada correctamente");
-			limpiarCampos(getCampos());
+			if(DialogUtils.mostrarConfirmacion("Confirmación", "¿Está seguro de eliminar esta venta?")) {
+				if(ventaDB.eliminarFila(idFilaSeleccionada)) {
+					DialogUtils.mostrarInformacion("Gestor de Balance", "Venta eliminada correctamente");
+					limpiarCampos(getCampos());
+				}else {
+					DialogUtils.mostrarError("ERROR", "La venta no ha podido eliminarse correctamente. Intente de nuevo más tarde.");
+				}
+			}
 		}
 	}
 	

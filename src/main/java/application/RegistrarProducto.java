@@ -50,13 +50,15 @@ public class RegistrarProducto extends Registrable{
 			ArrayList<String> valores = getValores();
 			this.producto = new Producto(valores.get(0), Double.valueOf(valores.get(1)));
 			
-			productoDB.registrarProducto(producto);
-			limpiarCampos(getCampos());
-			
-			System.out.print("Producto registrado correctamente");
+			if(productoDB.registrarProducto(this.producto)) {
+				DialogUtils.mostrarInformacion("Gestor de Balance", "Producto registrado correctamente");
+				limpiarCampos(getCampos());
+			}else {
+				DialogUtils.mostrarError("ERROR", "El producto no ha podido registrarse correctamente. Intente de nuevo más tarde.");
+			}
 		}else {
-			System.out.print("Existen campos obligatorios sin llenar");
-		}
+			DialogUtils.mostrarError("Gestor de Balance", "Existen campos que no fueron llenados correctamente");
+		}	
 		
 	}
 	
@@ -65,20 +67,31 @@ public class RegistrarProducto extends Registrable{
 		if(valoresEstanCompletos()) {
 			ArrayList<String> valores = getValores();
 			this.producto = new Producto(valores.get(0), Double.valueOf(valores.get(1)));
-			productoDB.editarFila(producto, idFilaSeleccionada);
-			System.out.print("Producto editado correctamente");
-			limpiarCampos(getCampos());
+			if(DialogUtils.mostrarConfirmacion("Confirmación", "¿Está seguro de editar este producto?")) {
+				if(productoDB.editarFila(producto, idFilaSeleccionada)) {
+					DialogUtils.mostrarInformacion("Gestor de Balance", "Producto editado correctamente");
+					limpiarCampos(getCampos());
+				}else {
+					DialogUtils.mostrarError("ERROR", "El producto no ha podido editarse correctamente. Intente de nuevo más tarde.");
+				}
+			}
 		}else {
 			System.out.print("Existen campos sin llenar");
+			DialogUtils.mostrarError("Gestor de Balance", "Existen campos que no fueron llenados correctamente");
 		}
 	}
 	
 	public void iniciarEliminacion() {
 		String idFilaSeleccionada = tProducto.getIdSeleccionado();
 		if (idFilaSeleccionada != null || idFilaSeleccionada != "") {
-			productoDB.eliminarFila(idFilaSeleccionada);
-			System.out.print("Producto editado correctamente");
-			limpiarCampos(getCampos());
+			if(DialogUtils.mostrarConfirmacion("Confirmación", "¿Está seguro de eliminar este producto?")) {
+				if(productoDB.eliminarFila(idFilaSeleccionada)) {
+					DialogUtils.mostrarInformacion("Gestor de Balance", "Producto eliminado correctamente");
+					limpiarCampos(getCampos());
+				}else {
+					DialogUtils.mostrarError("ERROR", "El producto no ha podido eliminarse correctamente. Intente de nuevo más tarde.");
+				}
+			}
 		}
 	}
 }

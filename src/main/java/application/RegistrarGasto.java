@@ -53,39 +53,52 @@ public class RegistrarGasto extends Registrable{
 	public void iniciarRegistro() {
 		if (valoresEstanCompletos()) {
 			ArrayList<String> valores = getValores();
-			this.configurarVenta(valores);
-			gastoDB.registrarTransaccion(this.gasto);
-			
-			System.out.print("Gasto registrado correctamente");
-			limpiarCampos(getCampos());
+			this.configurarGasto(valores);
+			if(gastoDB.registrarTransaccion(this.gasto)) {
+				DialogUtils.mostrarInformacion("Gestor de Balance", "Gasto registrado correctamente");
+				limpiarCampos(getCampos());
+			}else {
+				DialogUtils.mostrarError("ERROR", "El gasto no ha podido registrarse correctamente. Intente de nuevo más tarde.");
+			}
 		}else {
-			System.out.print("Existen campos sin llenar");
-		}
+			DialogUtils.mostrarError("Gestor de Balance", "Existen campos que no fueron llenados correctamente");
+		}	
 	}
 	
 	public void iniciarEdicion() {
 		String idFilaSeleccionada = tGasto.getIdSeleccionado();
 		if(valoresEstanCompletos()) {
 			ArrayList<String> valores = getValores();
-			this.configurarVenta(valores);
-			gastoDB.editarFila(gasto, idFilaSeleccionada);
-			System.out.print("Gasto editado correctamente");
-			limpiarCampos(getCampos());
+			this.configurarGasto(valores);
+			if(DialogUtils.mostrarConfirmacion("Confirmación", "¿Está seguro de editar este gasto?")) {
+				if(gastoDB.editarFila(gasto, idFilaSeleccionada)) {
+					DialogUtils.mostrarInformacion("Gestor de Balance", "Gasto editado correctamente");
+					limpiarCampos(getCampos());
+				}else {
+					DialogUtils.mostrarError("ERROR", "El gasto no ha podido editarse correctamente. Intente de nuevo más tarde.");
+				}
+			}
 		}else {
 			System.out.print("Existen campos sin llenar");
+			DialogUtils.mostrarError("Gestor de Balance", "Existen campos que no fueron llenados correctamente");
 		}
 	}
 	
 	public void iniciarEliminacion() {
 		String idFilaSeleccionada = tGasto.getIdSeleccionado();
 		if (idFilaSeleccionada != null || idFilaSeleccionada != "") {
-			gastoDB.eliminarFila(idFilaSeleccionada);
-			System.out.print("Gasto eliminada correctamente");
-			limpiarCampos(getCampos());
+			if(DialogUtils.mostrarConfirmacion("Confirmación", "¿Está seguro de eliminar este gasto?")) {
+				if(gastoDB.eliminarFila(idFilaSeleccionada)) {
+					DialogUtils.mostrarInformacion("Gestor de Balance", "Gasto eliminado correctamente");
+					limpiarCampos(getCampos());
+				}else {
+					DialogUtils.mostrarError("ERROR", "El gasto no ha podido eliminarse correctamente. Intente de nuevo más tarde.");
+				}
+			}
 		}
 	}
 	
-	public void configurarVenta(ArrayList<String> valores) {
+	public void configurarGasto(ArrayList<String> valores) {
 		gasto.setFecha(LocalDate.parse(valores.get(0)));
 		gasto.setDesc(valores.get(1));
 		gasto.setTipo(Categoria.valueOf(valores.get(2)));
