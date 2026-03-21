@@ -7,6 +7,6 @@ import model.Transaccion;
 public interface TransaccionDAO {
 	public boolean registrarTransaccion(Transaccion transaccion);
 	public ArrayList<Transaccion> listarTransacciones();
-	public void editarFila (Transaccion transaccion, String id);
-	public void eliminarFila(String id);
+	public boolean editarFila (Transaccion transaccion, String id);
+	public boolean eliminarFila(String id);
 }

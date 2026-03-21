@@ -102,15 +102,19 @@ public class ProductoDAO{
 		}
 	}
 	
-	public void editarFila(Producto producto, String id) {
-		String statement = String.format("UPDATE producto SET precio = %.2f WHERE nombre = %s", producto.getPrecio(), id);
+	public boolean editarFila(Producto producto, String id) {
+		String statement ="UPDATE producto SET precio = ? WHERE nombre = ?";
 		try{
 			conexion = ConexionDB.getConnection();
 			ps = conexion.prepareStatement(statement);
-			resultQuery= ps.executeQuery();
+			ps.setDouble(1, producto.getPrecio());
+			ps.setString(2, id);
+			int filasAfectadas = ps.executeUpdate();
+	        return filasAfectadas > 0;
 
 		}catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}finally {
 			try {
 				if (resultQuery != null) resultQuery.close();
@@ -122,15 +126,18 @@ public class ProductoDAO{
 		}
 	}
 	
-	public void eliminarFila(String id) {
-		String statement = String.format("DELETE FROM producto WHERE nombre = %s",  id);
+	public boolean eliminarFila(String id) {
+		String statement = "DELETE FROM producto WHERE nombre = ?";
 		try{
 			conexion = ConexionDB.getConnection();
 			ps = conexion.prepareStatement(statement);
-			resultQuery= ps.executeQuery();
+			ps.setString(1, id);
+			int filasAfectadas = ps.executeUpdate();
+	        return filasAfectadas > 0;
 
 		}catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}finally {
 			try {
 				if (resultQuery != null) resultQuery.close();

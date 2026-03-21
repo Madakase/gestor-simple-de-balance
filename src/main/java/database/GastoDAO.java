@@ -82,21 +82,25 @@ public class GastoDAO implements TransaccionDAO{
 		}
 	}
 	
-	public void editarFila(Transaccion tr, String id) {
+	public boolean editarFila(Transaccion tr, String id) {
 		Gasto gasto = (Gasto) tr;
-		String fechaFormateada = gasto.getFecha().toString();
-		String estadoFormateado= gasto.getEstado().toString();
-		String tipoFormateado= gasto.getTipo().toString();
 		
-		String statement = String.format("UPDATE venta SET fecha = %s, descripcion = %s, tipo = %s, estado = %s, pago = %s WHERE id_gasto = %d"
-				, fechaFormateada, gasto.getDescripcion(), tipoFormateado, estadoFormateado, gasto.getValor(), id);
+		String statement = "UPDATE gasto SET fecha = ?, descripcion = ?, tipo = ?, estado = ?, deuda = ? WHERE id_gasto = ?";
 		try{
 			conexion = ConexionDB.getConnection();
 			ps = conexion.prepareStatement(statement);
-			resultQuery= ps.executeQuery();
+			ps.setDate(1, java.sql.Date.valueOf(gasto.getFecha()));
+			ps.setString(2, gasto.getDescripcion());
+			ps.setString(3, gasto.getTipo().toString());
+			ps.setString(4, (gasto.getEstado()).toString());
+			ps.setDouble(5, gasto.getValor());
+			ps.setInt(6, Integer.valueOf(id));
+			int filasAfectadas = ps.executeUpdate();
+	        return filasAfectadas > 0;
 
 		}catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}finally {
 			try {
 				if (resultQuery != null) resultQuery.close();
@@ -108,15 +112,18 @@ public class GastoDAO implements TransaccionDAO{
 		}
 	}
 	
-	public void eliminarFila(String id) {
-		String statement = String.format("DELETE FROM gasto WHERE id_gasto = %s",  id);
+	public boolean eliminarFila(String id) {
+		String statement = "DELETE FROM gasto WHERE id_gasto = ?";
 		try{
 			conexion = ConexionDB.getConnection();
 			ps = conexion.prepareStatement(statement);
-			resultQuery= ps.executeQuery();
+			ps.setInt(1, Integer.valueOf(id));
+			int filasAfectadas = ps.executeUpdate();
+	        return filasAfectadas > 0;
 
 		}catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}finally {
 			try {
 				if (resultQuery != null) resultQuery.close();

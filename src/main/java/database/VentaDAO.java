@@ -82,20 +82,25 @@ public class VentaDAO implements TransaccionDAO{
 		}
 	}
 	
-	public void editarFila(Transaccion tr, String id) {
+	public boolean editarFila(Transaccion tr, String id) {
 		Venta venta = (Venta) tr;
-		String fechaFormateada = venta.getFecha().toString();
-		String estadoFormateado= venta.getEstado().toString();
-		
-		String statement = String.format("UPDATE venta SET fecha = %s, descripcion = %s, producto = %s, estado = %s, pago = %s WHERE id_venta = %d"
-				, fechaFormateada, venta.getDescripcion(), venta.getProducto(), estadoFormateado, venta.getValor(), id);
+		String statement = "UPDATE venta SET fecha = ?, descripcion = ?, producto = ?, estado = ?, pago = ? WHERE id_venta = ?";
 		try{
 			conexion = ConexionDB.getConnection();
 			ps = conexion.prepareStatement(statement);
-			resultQuery= ps.executeQuery();
+			ps.setDate(1, java.sql.Date.valueOf(venta.getFecha()));
+			ps.setString(2, venta.getDescripcion());
+			ps.setString(3, venta.getProducto());
+			ps.setString(4, (venta.getEstado()).toString());
+			ps.setDouble(5, venta.getValor());
+			ps.setInt(6, Integer.valueOf(id));
+			
+			int filasAfectadas = ps.executeUpdate();
+	        return filasAfectadas > 0;
 
 		}catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}finally {
 			try {
 				if (resultQuery != null) resultQuery.close();
@@ -107,15 +112,19 @@ public class VentaDAO implements TransaccionDAO{
 		}
 	}
 	
-	public void eliminarFila(String id) {
-		String statement = String.format("DELETE FROM venta WHERE id_venta = %s",  id);
+	public boolean eliminarFila(String id) {
+		String statement = "DELETE FROM venta WHERE id_venta = ?";
 		try{
 			conexion = ConexionDB.getConnection();
 			ps = conexion.prepareStatement(statement);
-			resultQuery= ps.executeQuery();
+			ps.setInt(1, Integer.valueOf(id));
+			
+			int filasAfectadas = ps.executeUpdate();
+	        return filasAfectadas > 0;
 
 		}catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}finally {
 			try {
 				if (resultQuery != null) resultQuery.close();
