@@ -30,8 +30,15 @@ Sigue estos pasos para poner en marcha la aplicación:
 1. **Crear un servidor MySQL local**  
    Debes instalar y configurar tu propio servidor MySQL (o MariaDB).  
    Si no sabes cómo hacerlo, puedes seguir una guía como [esta](https://dev.mysql.com/doc/refman/8.0/en/installing.html) (ajusta según tu sistema operativo).
+   
+2. **Ejecutar el script SQL para crear la base de datos y las tablas**
+   En la ubicación: `src/main/resources/` se incluye un archivo `schema.sql` (o similar).  
+   Conéctate a tu servidor MySQL y ejecuta ese script para crear la base de datos y todas las tablas necesarias.  
+   Por ejemplo, desde la línea de comandos de MySQL:  
+   ```bash
+   mysql -u tu_usuario -p < ruta/al/archivo/schema.sql
 
-2. **Configurar la conexión a la base de datos**  
+3. **Configurar la conexión a la base de datos**  
    Una vez que el servidor esté funcionando, debes modificar el archivo de configuración de conexión:
    - Archivo: `src/main/java/database/ConexionDB`  
    - En la línea donde se usa `getConnection()`, cambia la URL, el usuario y la contraseña para que apunten a tu base de datos local.  
@@ -39,5 +46,5 @@ Sigue estos pasos para poner en marcha la aplicación:
      ```java
      Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tu_base_de_datos", "tu_usuario", "tu_contraseña");
      
-3. **Ejecutar la aplicación**
+4. **Ejecutar la aplicación**
    Una vez configurada la conexión, ejecuta el archivo ejecutable generado por jpackage.
