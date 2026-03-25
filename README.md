@@ -31,7 +31,7 @@ Sigue estos pasos para poner en marcha la aplicación:
    Debes instalar y configurar tu propio servidor MySQL (o MariaDB).  
    Si no sabes cómo hacerlo, puedes seguir una guía como [esta](https://dev.mysql.com/doc/refman/8.0/en/installing.html) (ajusta según tu sistema operativo).
    
-2. **Ejecutar el script SQL para crear la base de datos y las tablas**
+2. **Ejecutar el script SQL para crear la base de datos y las tablas**  
    En la ubicación: `src/main/resources/` se incluye un archivo `schema.sql` (o similar).  
    Conéctate a tu servidor MySQL y ejecuta ese script para crear la base de datos y todas las tablas necesarias.  
    Por ejemplo, desde la línea de comandos de MySQL:  
