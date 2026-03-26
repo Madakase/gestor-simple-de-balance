@@ -10,7 +10,7 @@ public class ConexionDB{
 	public static Connection getConnection() {
 		if(conexion == null) {
 			try {            
-				conexion= DriverManager.getConnection("jdbc:mysql://localhost:3306/kefir_pedidos","root", "ISRAel16");
+				conexion= DriverManager.getConnection("jdbc:mysql://localhost:3306/schema","tu_usuario", "tu_contraseña");
 	            System.out.println("Conexión OK");
 			}
 			catch(SQLException e){

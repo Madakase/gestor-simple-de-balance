@@ -1,5 +1,5 @@
-create database kefir_pedidos;
-use kefir_pedidos;
+create database schema;
+use schema;
 
 create table venta(
 	id_venta int primary key not null AUTO_INCREMENT,
