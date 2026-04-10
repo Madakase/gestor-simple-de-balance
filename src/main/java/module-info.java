@@ -1,4 +1,4 @@
-module kefir_pedidos {
+module GestorSB {
 	requires java.sql;
 	requires javafx.controls;
 	requires javafx.graphics;
