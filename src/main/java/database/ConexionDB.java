@@ -6,11 +6,13 @@ import java.sql.SQLException;
 
 public class ConexionDB{
 	private static Connection conexion = null;
+	private static String usuario;
+	private static String contraseña;
 	
 	public static Connection getConnection() {
 		if(conexion == null) {
 			try {            
-				conexion= DriverManager.getConnection("jdbc:mysql://localhost:3306/schema","root", "");
+				conexion= DriverManager.getConnection("jdbc:mysql://localhost:3306/schema",usuario, contraseña);
 	            System.out.println("Conexión OK");
 			}
 			catch(SQLException e){
@@ -33,4 +35,11 @@ public class ConexionDB{
             e.printStackTrace();
         }
     }
+	public static void setUsuario(String u) {
+		ConexionDB.usuario= u;
+	}
+	
+	public static void setContraseña(String c) {
+		ConexionDB.contraseña= c;
+	}
 }

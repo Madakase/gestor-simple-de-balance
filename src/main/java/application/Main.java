@@ -6,9 +6,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
-		Menu menu = new Menu();
+		Login login = new Login();
 		
-		menu.start(primaryStage);
+		login.start(primaryStage);
 		
 	}
 	

@@ -1,6 +1,11 @@
 create database schema;
 use schema;
 
+create table producto(
+    nombre varchar(50) primary key not null,
+    precio double
+);
+
 create table venta(
 	id_venta int primary key not null AUTO_INCREMENT,
     fecha date not null,
@@ -18,9 +23,4 @@ create table gasto(
     tipo enum('PERSONAL', 'INSUMOS', 'OTRO'),
     estado enum('PENDIENTE', 'CANCELADO'),
     deuda double not null
-);
-
-create table producto(
-    nombre varchar(50) primary key not null,
-    precio double
 );
