@@ -18,7 +18,7 @@ La aplicación está construida con las siguientes tecnologías principales:
 Para ejecutar la aplicación, el sistema debe cumplir con los siguientes requisitos:
 
 - **Servidor MySQL** (o MariaDB) versión equivalente a 12.2.2-MariaDB.  
-- **Sistema Operativo Linux**  cualquier distribución.   
+- Sistema operativo **Linux** de cualquier distribución.   
 - No es necesario tener Java instalado, ni las librerías adicionales, ya que la aplicación se distribuye empaquetada con **jpackage**.
 
 ---
@@ -41,6 +41,6 @@ Sigue estos pasos para poner en marcha la aplicación:
    Por ejemplo, desde la línea de comandos de MySQL:  
    ```bash
    mysql -u tu_usuario -p < ruta/al/archivo/schema.sql
-     
+
 3. **Ejecutar la aplicación**  
    Una vez configurada la conexión, ejecuta el archivo ejecutable generado por jpackage en la ubicación: `GestorSB/dist/GestorSB/bin/`
