@@ -31,8 +31,9 @@ Sigue estos pasos para poner en marcha la aplicación:
    Debes instalar y configurar tu propio servidor MySQL (o MariaDB).  
    Si no sabes cómo hacerlo, puedes seguir una guía como [esta](https://dev.mysql.com/doc/refman/8.0/en/installing.html) (ajusta según tu sistema operativo).
    El servidor debe ser **obligatoriamente** configurado con las siguientes características:
-   - **Nombre de usuario:** root.
-   - **Sin contraseña**.
+   - El servidor debe tener al menos un **usuario**.  
+   - Cada usuario debe tener una **contraseña**.  
+   - La dirección y puerto debe ser **localhost:3306**.  
    
 2. **Ejecutar el script SQL para crear la base de datos y las tablas**  
    En la ubicación: `src/main/resources/` se incluye un archivo `schema.sql`  
@@ -42,4 +43,4 @@ Sigue estos pasos para poner en marcha la aplicación:
    mysql -u tu_usuario -p < ruta/al/archivo/schema.sql
      
 3. **Ejecutar la aplicación**  
-   Una vez configurada la conexión, ejecuta el archivo ejecutable generado por jpackage.
+   Una vez configurada la conexión, ejecuta el archivo ejecutable generado por jpackage en la ubicación: `GestorSB/dist/GestorSB/bin/`
